@@ -1,0 +1,80 @@
+{
+  "name": "us-visa-bot",
+  "version": "1.2.0",
+  "description": "Web-based manager for US visa appointment bot",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "start": "npm run build && electron .",
+    "dev": "npm run build && node server/server.js",
+    "build": "cd client && npm run build",
+    "pack:mac": "npm run build && electron-builder --mac",
+    "pack:win": "npm run build && electron-builder --win",
+    "pack:linux": "npm run build && electron-builder --linux"
+  },
+  "author": "",
+  "license": "ISC",
+  "build": {
+    "appId": "com.usvisabot.app",
+    "productName": "US Visa Bot Manager",
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "src/**/*",
+      "client/dist/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist-electron"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "cheerio": "^1.0.0-rc.12",
+    "commander": "^14.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^30.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}

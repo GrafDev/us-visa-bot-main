@@ -1,0 +1,36 @@
+node_modules/*
+.env
+
+# Database
+server/db/*.db
+server/db/*.db-*
+
+# Client build
+client/dist
+client/node_modules
+
+# Electron build
+dist-electron/
+*.dmg
+*.zip
+*.AppImage
+*.deb
+*.exe
+*.msi
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
