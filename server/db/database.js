@@ -3,7 +3,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dbPath = path.join(__dirname, 'clients.db');
+
+const dbDir = process.env.USER_DATA_PATH || __dirname;
+const dbPath = path.join(dbDir, 'clients.db');
+
+console.log('Database path:', dbPath);
 
 export const db = new Database(dbPath);
 

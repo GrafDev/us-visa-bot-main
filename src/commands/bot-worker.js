@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { program } from 'commander';
+// import { program } from 'commander';
 import { Bot } from '../lib/bot.js';
 import { getConfig } from '../lib/config.js';
 import { sleep, isSocketHangupError } from '../lib/utils.js';
@@ -76,12 +76,28 @@ async function runBot(options) {
   }
 }
 
-program
-  .requiredOption('--client-id <id>', 'client ID')
-  .requiredOption('-c, --current <date>', 'current booked date')
-  .option('-t, --target <date>', 'target date to stop at')
-  .option('-m, --min <date>', 'minimum date acceptable')
-  .option('--dry-run', 'only log what would be booked without actually booking')
-  .action(runBot);
+// Parse arguments manually to avoid commander issues in Electron/ASAR
+const args = process.argv.slice(2);
+const options = {};
 
-program.parse();
+for (let i = 0; i < args.length; i++) {
+  const arg = args[i];
+  if (arg === '--client-id') {
+    options.clientId = args[++i];
+  } else if (arg === '--current' || arg === '-c') {
+    options.current = args[++i];
+  } else if (arg === '--target' || arg === '-t') {
+    options.target = args[++i];
+  } else if (arg === '--min' || arg === '-m') {
+    options.min = args[++i];
+  } else if (arg === '--dry-run') {
+    options.dryRun = true;
+  }
+}
+
+if (!options.clientId || !options.current) {
+  console.error('Missing required arguments: --client-id and --current are required');
+  process.exit(1);
+}
+
+runBot(options);

@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import { log } from './utils.js';
 import { getBaseUri } from './config.js';
 
@@ -42,14 +42,14 @@ export class VisaHttpClient {
 
   async checkAvailableDate(headers, scheduleId, facilityId) {
     const url = `${this.baseUri}/schedule/${scheduleId}/appointment/days/${facilityId}.json?appointments[expedite]=false`;
-    
+
     return this._jsonRequest(url, headers)
       .then(data => data.map(item => item.date));
   }
 
   async checkAvailableTime(headers, scheduleId, facilityId, date) {
     const url = `${this.baseUri}/schedule/${scheduleId}/appointment/times/${facilityId}.json?date=${date}&appointments[expedite]=false`;
-    
+
     return this._jsonRequest(url, headers)
       .then(data => data['business_times'][0] || data['available_times'][0]);
   }

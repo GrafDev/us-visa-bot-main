@@ -33,9 +33,12 @@ function createWindow() {
 
   mainWindow.loadURL('http://localhost:3001');
 
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  // Always open DevTools for debugging
+  // mainWindow.webContents.openDevTools();
+
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('Failed to load:', errorCode, errorDescription);
+  });
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -54,8 +57,20 @@ function startServer() {
 
   const serverPath = path.join(__dirname, '../server/server.js');
 
+  console.log('Main Process execPath:', process.execPath);
+  console.log('Main Process version:', process.version);
+  console.log('Spawning server with:', process.execPath);
+
+  const userDataPath = app.getPath('userData');
+  console.log('User Data Path:', userDataPath);
+
   serverProcess = spawn(process.execPath, ['--no-warnings', serverPath], {
-    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', PORT: SERVER_PORT },
+    env: {
+      ...process.env,
+      ELECTRON_RUN_AS_NODE: '1',
+      PORT: SERVER_PORT,
+      USER_DATA_PATH: userDataPath
+    },
     stdio: 'inherit'
   });
 
