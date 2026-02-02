@@ -54,8 +54,8 @@ function startServer() {
 
   const serverPath = path.join(__dirname, '../server/server.js');
 
-  serverProcess = spawn('node', ['--no-warnings', serverPath], {
-    env: { ...process.env, PORT: SERVER_PORT },
+  serverProcess = spawn(process.execPath, ['--no-warnings', serverPath], {
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', PORT: SERVER_PORT },
     stdio: 'inherit'
   });
 
